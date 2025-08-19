@@ -1,7 +1,14 @@
 import React from 'react'
 import Navbar from './Navbar'
-
+import { useNavigate } from 'react-router-dom'
 function Hero() {
+ const navigate=useNavigate();
+  const goToHide=()=>{
+    navigate("/hide")
+  }
+  const goToReveal=()=>{
+    navigate("/reveal")
+  }
   return (
     <div className="min-h-screen w-full bg-[#101014] relative text-white -z-0 pt-px overflow-hidden ">
   
@@ -22,23 +29,23 @@ function Hero() {
 
 <Navbar />
 
-<div className="text-center text-7xl mt-20 mt-12 font-bold">
+<div className="text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-12 sm:mt-16 md:mt-20 font-bold px-4">
   <span className='text-white'>Hide Secrets</span> <span className='text-green-600'>In Plain Sight !</span>
 </div>
 
-<div className='text-center text-[18px] mt-14 text-gray-400 max-w-2xl mx-auto'>Encrypt any message and conceal it inside your favorite images.
+<div className='text-center text-base sm:text-lg md:text-[18px] mt-8 sm:mt-10 md:mt-14 text-gray-400 max-w-xs sm:max-w-lg md:max-w-2xl mx-auto px-4'>Encrypt any message and conceal it inside your favorite images.
 Share the image, and only those who know the key can reveal the secret.</div>
 
-<div className='flex justify-center mt-14 space-x-10'>
-  <button className="px-6 py-3 rounded-lg border bg-black/40 border-gray-600 text-white text-center">
+<div className='flex flex-col sm:flex-row justify-center mt-8 sm:mt-10 md:mt-14 space-y-4 sm:space-y-0 sm:space-x-4 md:space-x-10 px-4'>
+  <button onClick={goToHide} className="px-4 sm:px-6 py-2 sm:py-3 rounded-lg border bg-black/40 border-gray-600 text-white text-center text-sm sm:text-base">
     Hide a Message
   </button>
-  <button className="px-6 py-3 rounded-lg border bg-black/40 border-gray-600 text-white text-center">
+  <button onClick={goToReveal} className="px-4 sm:px-6 py-2 sm:py-3 rounded-lg border bg-black/40 border-gray-600 text-white text-center text-sm sm:text-base">
     Reveal a Message
   </button>
 </div>
 
-<div className='text-center mt-12 text-[18px] text-yellow-200 font-bold tracking-[0.3rem]'>Built on <span className='text-white'>ENCRYPTION</span> and <span className='text-green-600'>STEGANOGRAPHY</span> </div>
+<div className='text-center mt-8 sm:mt-10 md:mt-12 text-sm sm:text-base md:text-[18px] text-yellow-200 font-bold tracking-[0.2rem] sm:tracking-[0.25rem] md:tracking-[0.3rem] px-4'>Built on <span className='text-white'>ENCRYPTION</span> and <span className='text-green-600'>STEGANOGRAPHY</span> </div>
 
 {/* 
 <img
