@@ -1,11 +1,9 @@
-// stegano.js - final fixed version
-// Exports:
-//   passwordToAesKey(password, salt?) -> CryptoKey
-//   hideMessage(file, message, password) -> Promise<Blob> (PNG blob)
-//   revealMessage(file, password) -> Promise<string>
-//   revealMessageFromImageData(imageData, password) -> Promise<string>
-// Debug helpers attached to window (optional).
 
+// Exports
+// passwordToAesKey(password, salt?)- CryptoKey
+// hideMessage(file, message, password) -Promise<Blob> (PNG blob)
+// revealMessage(file, password)-Promise<string>
+// revealMessageFromImageData(imageData, password)-Promise<string>
 
 // KEY DERIVATION 
 export async function passwordToAesKey(password, salt = null) {
