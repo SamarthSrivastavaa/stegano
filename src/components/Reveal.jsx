@@ -115,7 +115,7 @@
 // }
 
 // export default Reveal
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Navbar from "./Navbar";
 import { revealMessage } from "../utils/stegano"; // import your reveal util
 
@@ -127,6 +127,7 @@ function Reveal() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const fileInputRef = useRef(null);
 
   // file upload
   const handleFileChange = (e) => {
@@ -136,6 +137,15 @@ function Reveal() {
       setDecryptedMessage(null);
       setError(null);
     }
+  };
+
+  const handleClearFile = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setFile(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   // reveal button
@@ -188,15 +198,36 @@ function Reveal() {
         <div className="relative mb-8">
           <label
             htmlFor="file-upload"
-            className="cursor-pointer border-2 border-dashed border-green-500/60 rounded-xl p-10 text-center bg-black/20 backdrop-blur-sm hover:border-green-400/80 transition-all duration-300 block"
+            className="cursor-pointer border-2 border-dashed border-green-500/60 rounded-xl p-10 text-center bg-black/20 backdrop-blur-sm hover:border-green-400/80 transition-all duration-300 block relative overflow-hidden"
           >
-            <div className="text-green-400 text-5xl mb-4">🔍</div>
-            <p className="text-lg text-gray-300 mb-2">
-              {file ? file.name : "Drop your stego image here"}
-            </p>
-            <p className="text-sm text-gray-500">or click to browse</p>
+            {!previewUrl && (
+              <>
+                <div className="text-green-400 text-5xl mb-4">🔍</div>
+                <p className="text-lg text-gray-300 mb-2">
+                  {file ? file.name : "Drop your stego image here"}
+                </p>
+                <p className="text-sm text-gray-500">or click to browse</p>
+              </>
+            )}
+            {previewUrl && (
+              <div className="relative">
+                <img
+                  src={previewUrl}
+                  alt="Selected stego image"
+                  className="w-full max-h-72 mx-auto rounded-lg object-contain border border-green-500/30"
+                />
+                <button
+                  onClick={handleClearFile}
+                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-lg"
+                  aria-label="Clear selected image"
+                >
+                  ×
+                </button>
+              </div>
+            )}
           </label>
           <input
+            ref={fileInputRef}
             id="file-upload"
             type="file"
             accept="image/*"
@@ -249,19 +280,7 @@ function Reveal() {
           </div>
         )}
 
-        {/* Image Preview */}
-        {previewUrl && (
-          <div className="mb-6">
-            <div className="relative">
-              <img
-                src={previewUrl}
-                alt="Uploaded stego image"
-                className="w-full max-w-md mx-auto rounded-lg border border-green-500/30 opacity-90 transition-opacity duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg pointer-events-none" />
-            </div>
-          </div>
-        )}
+        {/* Image Preview moved inside the upload box above */}
 
         {/* Decrypted Message */}
         {decryptedMessage && (
@@ -277,7 +296,6 @@ function Reveal() {
           </div>
         )}
 
-        {/* Bottom Note */}
         <div className="text-center mt-8">
           <p className="text-sm text-gray-500 italic">
             No servers. No traces. Just you, your password, and the truth.

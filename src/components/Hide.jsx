@@ -114,12 +114,13 @@
 // }
 
 // export default Hide
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Navbar from "./Navbar";
 import { hideMessage } from "../utils/stegano";
 
 function Hide() {
   const [file, setFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const [message, setMessage] = useState("");
   const [key, setKey] = useState("");
   const [showKey, setShowKey] = useState(false);
@@ -127,12 +128,24 @@ function Hide() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
+      setPreviewUrl(URL.createObjectURL(e.target.files[0]));
       setOutputUrl(null); // reset previous result
     }
+  };
+
+  const handleClearFile = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setFile(null);
+    setPreviewUrl(null);
+    setOutputUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   // encryption handler
@@ -212,15 +225,36 @@ function Hide() {
         <div className="relative mb-8">
           <label
             htmlFor="file-upload"
-            className="cursor-pointer border-2 border-dashed border-green-500/60 rounded-xl p-10 text-center bg-black/20 backdrop-blur-sm hover:border-green-400/80 transition-all duration-300 block"
+            className="cursor-pointer border-2 border-dashed border-green-500/60 rounded-xl p-10 text-center bg-black/20 backdrop-blur-sm hover:border-green-400/80 transition-all duration-300 block relative overflow-hidden"
           >
-            <div className="text-green-400 text-5xl mb-4">+</div>
-            <p className="text-lg text-gray-300 mb-2">
-              {file ? file.name : "Drop your image here"}
-            </p>
-            <p className="text-sm text-gray-500">or click to browse</p>
+            {!previewUrl && (
+              <>
+                <div className="text-green-400 text-5xl mb-4">+</div>
+                <p className="text-lg text-gray-300 mb-2">
+                  {file ? file.name : "Drop your image here"}
+                </p>
+                <p className="text-sm text-gray-500">or click to browse</p>
+              </>
+            )}
+            {previewUrl && (
+              <div className="relative">
+                <img
+                  src={previewUrl}
+                  alt="Selected"
+                  className="w-full max-h-72 mx-auto rounded-lg object-contain border border-green-500/30"
+                />
+                <button
+                  onClick={handleClearFile}
+                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-lg"
+                  aria-label="Clear selected image"
+                >
+                  ×
+                </button>
+              </div>
+            )}
           </label>
           <input
+            ref={fileInputRef}
             id="file-upload"
             type="file"
             accept="image/*"
