@@ -225,15 +225,15 @@ function Hide() {
         <div className="relative mb-8">
           <label
             htmlFor="file-upload"
-            className="cursor-pointer border-2 border-dashed border-green-500/60 rounded-xl p-10 text-center bg-black/20 backdrop-blur-sm hover:border-green-400/80 transition-all duration-300 block relative overflow-hidden"
+            className="cursor-pointer border-2 border-dashed border-green-500/60 rounded-xl p-6 sm:p-8 md:p-10 text-center bg-black/20 backdrop-blur-sm hover:border-green-400/80 transition-all duration-300 block relative overflow-hidden"
           >
             {!previewUrl && (
               <>
-                <div className="text-green-400 text-5xl mb-4">+</div>
-                <p className="text-lg text-gray-300 mb-2">
+                <div className="text-green-400 text-4xl sm:text-5xl md:text-6xl mb-3 sm:mb-4">+</div>
+                <p className="text-base sm:text-lg text-gray-300 mb-1.5 sm:mb-2">
                   {file ? file.name : "Drop your image here"}
                 </p>
-                <p className="text-sm text-gray-500">or click to browse</p>
+                <p className="text-xs sm:text-sm text-gray-500">or click to browse</p>
               </>
             )}
             {previewUrl && (
@@ -241,11 +241,11 @@ function Hide() {
                 <img
                   src={previewUrl}
                   alt="Selected"
-                  className="w-full max-h-72 mx-auto rounded-lg object-contain border border-green-500/30"
+                  className="w-full max-h-60 sm:max-h-72 mx-auto rounded-lg object-contain border border-green-500/30"
                 />
                 <button
                   onClick={handleClearFile}
-                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-lg"
+                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center shadow-lg text-sm sm:text-base"
                   aria-label="Clear selected image"
                 >
                   ×
